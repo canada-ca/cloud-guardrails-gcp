@@ -5,6 +5,10 @@
 
 [Cloud Inventory Assets](https://cloud.google.com/asset-inventory/docs/overviewhttps://cloud.google.com/asset-inventory/docs/overview)
 
+## Permissions
+- Cloud Asset Viewer
+- Service Usage Consumer
+
 ##  Process
 
 ### Generate Inventory
@@ -20,8 +24,8 @@ gsutil mb gs://<your_bucket_name>
 
 3. Run inventory report
 ```
-gcloud asset export ---out-path=gs://<your_bucket_name>/resource_inventory.json \
-	--content-type=resource \ # content types can be the following: resource, iam
+gcloud asset export ---output-path=gs://<your_bucket_name>/resource_inventory.json \
+	--content-type=resource \ # content types can be the following: resource, iam-policy, access-policy, org-policy
 	--project=<your_project_id> \ # --folder or --organization can also be used
 ```
 
