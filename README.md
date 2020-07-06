@@ -29,23 +29,24 @@ gcloud asset export ---output-path=gs://<your_bucket_name>/resource_inventory.js
 	--project=<your_project_id> \ # --folder or --organization can also be used
 ```
 
-4. Download the Cloud Foundation Toolkit
-```
-# OS X
-curl -o cft https://storage.googleapis.com/cft-cli/latest/cft-darwin-amd64
-# Linux
-curl -o cft https://storage.googleapis.com/cft-cli/latest/cft-linux-amd64
-# executable
-chmod +x cft
+4. Download [Conftest](https://www.conftest.dev/)
 
-# Windows
-curl -o cft.exe https://storage.googleapis.com/cft-cli/latest/cft-windows-amd64
 ```
+# Linux
+$ wget https://github.com/open-policy-agent/conftest/releases/download/v0.17.1/conftest_0.17.1_Linux_x86_64.tar.gz
+$ tar xzf conftest_0.17.1_Linux_x86_64.tar.gz
+$ sudo mv conftest /usr/local/bin
+```
+Installation process for other [OSes](https://www.conftest.dev/install/)
 
 5. Clone this repo
 
-6. RUn the Scorecard
+6. Copy files from google storage to your location disk
 ```
-./cft scorecard --policy-path=./guardrails/ \
-	--bucket=<your_bucket_name>
+gsutil cp gs://<your_bucket_name>/resource_inventory.json ./cai-dir
+```
+
+6. Run the conftest
+```
+conftest test -p guardrails cai-dir
 ```
