@@ -46,7 +46,11 @@ Installation process for other [OSes](https://www.conftest.dev/install/)
 gsutil cp gs://<your_bucket_name>/resource_inventory.json ./cai-dir
 ```
 
-6. Run the conftest
+6. Run the Tests
 ```
-conftest test -p guardrails cai-dir
+./format.sh
 ```
+
+This will format the output from the inventory dump and run the tests. Results will be placed in the report.txt folder in the current directory.
+
+example output
