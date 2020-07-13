@@ -5,8 +5,13 @@ has_location(obj, field){
 }
 
 allowlist = [
-    "northamerica-northesst1",
+    "northamerica-northeast1",
     "global"
+]
+
+allowedresource = [
+    "resourcemanager",
+    "bigquery"
 ]
 
 deny[{"msg": message}] {
