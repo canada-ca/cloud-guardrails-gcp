@@ -8,6 +8,7 @@ fi
 for file in ./cai-dir/*.json; do
     echo $file >> report.txt
     cat $file | tr '\n' ',' | sed  '1s;^;[\n;' - | sed '$ a ]'  | conftest test -p guardrails - >> report.txt
+    printf "\n" >> report.txt
 done
 
 
