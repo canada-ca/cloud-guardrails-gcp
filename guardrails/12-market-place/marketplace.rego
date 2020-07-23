@@ -10,8 +10,8 @@ bad_roles := [
 allowedusers = []
 
 # Does the role binding mastch the disallowed role
-invalid_role (rolebinding){
-	rolebinding.role == bad_roles[_]
+invalid_role (rolebinding, roles){
+	rolebinding.role == roles[_]
 }
 
 # Checks Members list for matching pattern
@@ -24,7 +24,7 @@ deny[{"msg": message}] {
     rolebinding := input.iam_policy.bindings[_]
 	users := rolebinding.members[_]
     
-    invalid_role(rolebinding)
+    invalid_role(rolebinding, bad_roles)
     not containsuser(users, allowedusers)
 
     message := sprintf("Resource '%v' has Policy Role Binding '%v' on Member '%v' which is not allowed", [input.name, bad_roles, users])
