@@ -14,7 +14,7 @@ gsutil mb gs://$MY_BUCKET_NAME
 gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json --content-type=resource --project=soy-geography-279112 
 
 #List the log sinks for check 11
-gcloud beta logging sinks list --format=json | sed 's/\[//;s/\]//' | gsutil cp - gs://$MY_BUCKET_NAME/logsinks.json
+#gcloud beta logging sinks list --format=json | sed 's/\[//;s/\]//' | gsutil cp - gs://$MY_BUCKET_NAME/logsinks.json
 
 #Copy the inventory content to the working directory 
 
