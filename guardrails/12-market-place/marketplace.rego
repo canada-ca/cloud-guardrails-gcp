@@ -27,6 +27,6 @@ deny[{"msg": message}] {
     invalid_role(rolebinding, bad_roles)
     not containsuser(users, allowedusers)
 
-    message := sprintf("Resource '%v' has Policy Role Binding '%v' on Member '%v' which is not allowed", [input.name, bad_roles, users])
+    message := sprintf("Guardrail # 11: Resource '%v' has Policy Role Binding '%v' on Member '%v' which is not allowed", [input.name, bad_roles, users])
     
 }

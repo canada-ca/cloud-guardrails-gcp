@@ -21,7 +21,7 @@ deny[{"msg": message}] {
     asset := input
     not location_match(asset.resource.location, allowlist)
 
-    message := sprintf("%v not located in Canada '%v'", [asset.name, asset.resource.location])
+    message := sprintf("Guardrail # 5: %v not located in Canada '%v'", [asset.name, asset.resource.location])
 }
 
 location_match(str, pattern) {
