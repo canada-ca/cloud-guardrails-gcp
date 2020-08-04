@@ -1,23 +1,50 @@
 package main
 
-#This will check that log sink exists to save the logs auditing and monitoring
-#the exmaple below uses name "log_sink", change this name to match the existing name
+# This will check that log sink exists to save the logs auditing and monitoring
+# the example below uses name "log_sink", change this name to match the existing name
 
 sink_name := "logk_sink"
 required_log_bucket_name="log-history"
 bucket_required_asset_type="storage.googleapis.com/Bucket"
 logsink_required_asset_type="logging.googleapis.com/LogSink"
+required_asset_type = "storage.googleapis.com/Bucket"
+loggingAsset = "logging.googleapis.com/LogSink"
 
-# Validate bucket exists
-deny[{"msg": message}] {
-  bucket_required_asset_type == input.asset_type
-  not required_log_bucket_name == input.resource.data.name
-  message :=sprintf("The bucket '%s' does not exist", [input.resource.data.id])
+# Check for matching Bucket with the name "log-history"
+deny [{"msg": message}] {
+
+    asset := input.data[_]
+    
+    asset.asset_type == required_asset_type
+    
+    not asset.resource.data.iamConfiguration.name == required_log_bucket_name
+    
+    message := sprintf("Guardrail # 11: No storage bucket matching '%v' found", [required_asset_type])
+
 }
 
-# Validate log sink exists
- deny[{"msg": message}] {
-  logsink_required_asset_type == input.asset_type
-  not sink_name == input.resource.data.name
-  message :=sprintf("The log sink '%s' does not exist", [input.resource.data.name])
+# Deny if "logging.googleapis.com/LogSink" asset does not exist
+deny[{"msg":message}] {
+
+        asset := input.data
+        not exists(asset) 
+
+        message := sprintf("Guardrail # 11: Asset Type '%s' does not exist and is required to meet logging criteria", ["logging.googleapis.com/LogSink"])
 }
+
+# Deny if Log Sync does not exist that matches $sink_name (set this value at the top of the file)
+deny [{"msg":message}] {
+    asset := input.data[_]
+    
+    asset.asset_type == loggingAsset
+    
+    not sink_name == asset.resource.data.name
+    
+    message := sprintf("Guardrail # 11: The log sink '%s' does not exist", [sink_name])
+}
+
+
+exists(asset_type){
+        asset_type[_].asset_type == "logging.googleapis.com/LogSink"
+}
+
