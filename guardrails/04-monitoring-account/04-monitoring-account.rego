@@ -1,25 +1,40 @@
 package main
 
-# This check is to ensure that SSC has the right role and permissions to monitor tenant environement
-required_role := "SSC-CloudBroker"
-required_permissions := ["dataprocessing.groupcontrols.list","monitoring.dashboards.get","monitoring.groups.get","monitoring.services.get","orgpolicy.policy.get","resourcemanager.projects.get"]
-asset_type = "iam.googleapis.com/Role"
-existing_roles := input.data[_].resource.data.title
-existing_permissions := input.resource.data.includedPermissions
+match_roles := "roles/monitoring.viewer"
 
+match_asset := "cloudresourcemanager.googleapis.com/Project"
 
-# Validate role exists
-deny[{"msg": message}] {
- asset_type = input.asset_type
- not required_role == existing_roles
- message :=sprintf("The role '%s' does not exist", [existing_roles])
+value_exists (rolebinding, roles){
+	rolebinding.role == roles
 }
 
+# Users that are allowed to use the above Roles
+approvedusers = []
 
-# Validate permissions assigned
+# Validate Role Exists
 deny[{"msg": message}] {
- asset_type= input.asset_type
- required_role == existing_roles
- not required_permissions == existing_permissions
- message :=sprintf("The permissions '%s' for SSC-Cloudbroker do not exist", [existing_permissions])
+
+    input.data[_].asset_type == match_asset
+    rolebinding := input.data[_].iam_policy.bindings[_]
+
+    satisfied := [good | role = match_roles ; good = startswith(rolebinding.role, role)]
+
+    not value_exists(rolebinding, match_roles)
+
+    message := sprintf("Guardrail # 4: The role '%s' does not exist", [match_roles])
+
+}
+
+# Validate User assigned is correct
+deny[{"msg": message}] {
+
+    input.asset_type == match_asset
+
+    rolebinding := input.iam_policy.bindings[_]
+	users := rolebinding.members[_]
+    
+    invalid_role(rolebinding, match_roles)
+    not containsuser(users, approvedusers)
+
+    message := sprintf("Guardrail # 4: User '%v' is not approved for '%v' role", [users, match_roles])
 }
