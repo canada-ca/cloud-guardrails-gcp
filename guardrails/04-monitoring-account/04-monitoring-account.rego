@@ -1,4 +1,4 @@
-package check04
+package main
 
 #This check is to ensure that SSC has the right role and permissions to monitor tenant environement
 required_role := "SSC-CloudBroker"
@@ -9,7 +9,7 @@ existing_permissions := input.resource.data.includedPermissions
 
 # Validate role exists
  deny[{"msg": message}] {
-  not required_role == existing_roles
+  required_role == existing_roles
   message :=sprintf("The role '%s' does not exist", [required_role])
 }
 # Validate permission exists
