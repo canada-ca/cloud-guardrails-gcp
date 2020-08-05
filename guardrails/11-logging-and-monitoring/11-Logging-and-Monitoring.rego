@@ -13,13 +13,13 @@ loggingAsset = "logging.googleapis.com/LogSink"
 # Check for matching Bucket with the name "log-history"
 deny [{"msg": message}] {
 
-    asset := input.data[_]
+    asset := input.data
     
-    asset.asset_type == required_asset_type
+    asset[_].asset_type == required_asset_type
+    not bucketCheck(asset)
+    # not asset.resource.data.name == required_log_bucket_name
     
-    not asset.resource.data.iamConfiguration.name == required_log_bucket_name
-    
-    message := sprintf("Guardrail # 11: No storage bucket matching '%v' found", [required_asset_type])
+    message := sprintf("Guardrail # 11: No storage bucket matching '%v' found. Asset Name '%v'", [required_log_bucket_name, asset[_].name])
 
 }
 
@@ -43,6 +43,9 @@ deny [{"msg":message}] {
     message := sprintf("Guardrail # 11: The log sink '%s' does not exist", [sink_name])
 }
 
+bucketCheck(assetdata) {
+    assetdata[_].resource.data.name == required_log_bucket_name
+}
 
 exists(asset_type){
         asset_type[_].asset_type == "logging.googleapis.com/LogSink"
