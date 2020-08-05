@@ -21,12 +21,12 @@ containsuser (users, pattern) {
 
 deny[{"msg": message}] {
 
-    rolebinding := input.iam_policy.bindings[_]
+    rolebinding := input.data[_].iam_policy.bindings[_]
 	users := rolebinding.members[_]
     
     invalid_role(rolebinding, bad_roles)
     not containsuser(users, allowedusers)
 
-    message := sprintf("Guardrail # 11: Resource '%v' has Policy Role Binding '%v' on Member '%v' which is not allowed", [input.name, bad_roles, users])
+    message := sprintf("Guardrail # 12: Resource '%v' has Policy Role Binding '%v' on Member '%v' which is not allowed", [input.name, bad_roles, users])
     
 }
