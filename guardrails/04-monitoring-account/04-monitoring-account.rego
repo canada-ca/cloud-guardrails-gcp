@@ -1,41 +1,40 @@
 package main
 
-match_roles := "roles/monitoring.viewer"
+#This check is to ensure that SSC has the right role and permissions to monitor tenant environement
+required_role := "SSC-CloudBroker"
+required_permissions := ["dataprocessing.groupcontrols.list","monitoring.dashboards.get","monitoring.groups.get","monitoring.services.get","orgpolicy.policy.get","resourcemanager.projects.get"]
+asset_type="iam.googleapis.com/Role"
 
-match_asset := "cloudresourcemanager.googleapis.com/Project"
 
-value_exists (rolebinding, roles){
-	rolebinding.role == roles
+
+# Validate role exists
+ deny[{"msg": message}] {
+ 
+  asset := input.data
+  asset_type = asset[_].asset_type
+  asset_type == "iam.googleapis.com/Role"
+  
+  not evaluateRole(asset)
+  message :=sprintf("Guardrail # 4: The role '%s' does not exist", [required_role])
 }
 
-# Users that are allowed to use the above Roles
-approvedusers = []
-
-# Validate Role Exists
-deny[{"msg": message}] {
-
-    input.data[_].asset_type == match_asset
-    rolebinding := input.data[_].iam_policy.bindings[_]
-
-    satisfied := [good | role = match_roles ; good = startswith(rolebinding.role, role)]
-
-    not value_exists(rolebinding, match_roles)
-
-    message := sprintf("Guardrail # 4: The role '%s' does not exist", [match_roles])
-
+evaluateRole(asset){
+  required_role == asset[_].resource.data.title
 }
 
-# Validate User assigned is correct
-deny[{"msg": message}] {
+# Validate permissions assigned
+ deny[{"msg": message}] {
+  asset := input.data[_]
 
-    asset := input.data[_]
-    asset.asset_type == match_asset
+  existing_roles := asset.resource.data.title
+  existing_roles == required_role
+  
 
-    rolebinding := asset.iam_policy.bindings[_]
-	users := rolebinding.members[_]
-    
-    invalid_role(rolebinding, match_roles)
-    not containsuser(users, approvedusers)
+  existing_permissions := asset.resource.data.includedPermissions
 
-    message := sprintf("Guardrail # 4: User '%v' is not approved for '%v' role", [users, match_roles])
+  required_role == existing_roles
+  not required_permissions == existing_permissions
+  
+  message :=sprintf("Guardrail # 4: The permissions for '%v' do not match, expected '%v' but got '%v'", [existing_roles, required_permissions, existing_permissions])
 }
+
