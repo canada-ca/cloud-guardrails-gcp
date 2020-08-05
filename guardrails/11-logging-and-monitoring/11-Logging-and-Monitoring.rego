@@ -19,7 +19,7 @@ deny [{"msg": message}] {
     not bucketCheck(asset)
     # not asset.resource.data.name == required_log_bucket_name
     
-    message := sprintf("Guardrail # 11: No storage bucket matching '%v' found. Asset Name '%v'", [required_log_bucket_name, asset[_].name])
+    message := sprintf("Guardrail # 11: No storage bucket matching '%v' found.", [required_log_bucket_name])
 
 }
 
