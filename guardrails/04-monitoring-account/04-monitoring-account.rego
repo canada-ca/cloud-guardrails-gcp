@@ -28,9 +28,10 @@ deny[{"msg": message}] {
 # Validate User assigned is correct
 deny[{"msg": message}] {
 
-    input.asset_type == match_asset
+    asset := input.data[_]
+    asset.asset_type == match_asset
 
-    rolebinding := input.iam_policy.bindings[_]
+    rolebinding := asset.iam_policy.bindings[_]
 	users := rolebinding.members[_]
     
     invalid_role(rolebinding, match_roles)
