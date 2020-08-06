@@ -8,7 +8,7 @@ then
 	echo "Installing conftest"
 	wget https://github.com/open-policy-agent/conftest/releases/download/v0.20.0/conftest_0.20.0_Linux_x86_64.tar.gz
 	tar xzf conftest_0.20.0_Linux_x86_64.tar.gz
-	sudo mv conftest /usr/local/bin
+	mv conftest /usr/local/bin
 fi
 
 # Testing rego
