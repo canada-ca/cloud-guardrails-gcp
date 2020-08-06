@@ -4,14 +4,16 @@ has_location(obj, field){
    obj[field]
 }
 
-allowlist = [
+
+allowedregions = [
    "northamerica-northeast1",
    "global"
 ]
 
-allowedresource = [
-   "resourcemanager",
-   "bigquery"
+# List of Resources that will be allowed if they are located outside of the allowed regions
+allowedresources = [
+   "compute.googleapis.com/Firewall",
+   "compute.googleapis.com/Route"
 ]
 
 deny[{"msg": message}] {
@@ -20,9 +22,15 @@ deny[{"msg": message}] {
 
    has_location(asset.resource, "location")
 
-   not location_match(asset.resource.location, allowlist)
+   not location_match(asset.resource.location, allowedregions)
+
+   not allowedResource(asset.asset_type)
 
    message := sprintf("Guardrail # 5: Resource '%v' not located in Canada '%v'", [asset.name, asset.resource.location])
+}
+
+allowedResource(resource) {
+   resource == allowedresources[_]
 }
 
 location_match(str, pattern) {
