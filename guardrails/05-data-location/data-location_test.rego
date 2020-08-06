@@ -36,3 +36,26 @@ test_incorrect_location {
    count(results) == 1
 
 }
+
+test_allowed_resources {
+
+  allowedresource = [ 
+   "compute.googleapis.com/Firewall",
+   "compute.googleapis.com/Route"
+  ]
+
+  input := {"data": [
+           {
+             "asset_type": "service.googleapis.com/Object",
+             "name": "test_services",
+             "resource": {
+                 "title": "Generic-Cloud Resource",
+                 "location": "correct-region"
+             }
+           }
+  ]}
+
+  results := deny with input as input
+  count(results) == 0
+
+}
