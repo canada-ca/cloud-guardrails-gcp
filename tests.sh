@@ -12,9 +12,9 @@ then
 fi
 
 # Testing rego
-echo "Testing Policies
+echo "Testing Policies"
 for guardrail in guardrails/*; do
-	if [ -d $guardrail ]; then
+	if [ -d "$guardrail" ]; then
 		echo $guardrail
 		conftest verify -p $guardrail
 	fi
