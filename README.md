@@ -5,15 +5,15 @@
 | 01 Protect Root / Global Admins Account | | Doc (MFA  |
 | 02 Management of Administrative Privileges | | Doc (MFA)  |
 | 03 Cloud Console Access | | Doc (MFA)  |
-| 04 Enterprise Monitoring Accounts | | [Rego](guardrails/04-monitoring-account) |
-| 05 Data Location | | [Rego](guardrails/05-data-location) |
+| 04 Enterprise Monitoring Accounts | | [Rego](guardrails/04-monitoring-account/04-monitoring-account.rego) |
+| 05 Data Location | | [Rego](guardrails/05-data-location/data-location.rego) |
 | 06 Protection of Data-At-Rest | | Doc |
 | 07 Protection of Data-In-Transit | | Doc |
-| 08 Segment and Separate | | [Rego](guardrails/06-segment-and-separate) |
-| 09 Network Security Services | | [Rego](guardrails/09-network-security-services) |
+| 08 Segment and Separate | | [Rego](guardrails/06-segment-and-separate/) |
+| 09 Network Security Services | | [Rego](guardrails/09-network-security-services/) |
 | 10 Cyber Defence Services | | MOU |
-| 11 Logging and Monitoring | | [Rego](guardrails/11-logging-and-monitoring) |
-| 12 Configuration of Cloud Marketplaces | | [Rego](guardrails/12-market-place) |
+| 11 Logging and Monitoring | | [Rego](guardrails/11-logging-and-monitoring/11-Logging-and-Monitoring.rego) |
+| 12 Configuration of Cloud Marketplaces | | [Rego](guardrails/12-market-place/marketplace.rego) |
 
 
 ## Source Links
