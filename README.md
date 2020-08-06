@@ -25,6 +25,8 @@
 
 [conftest](https://www.conftest.dev/)
 
+[CFT Terraform templates](https://github.com/terraform-google-modules/terraform-example-foundation)
+
 ## Permissions
 - Cloud Asset Viewer
 - Service Usage Consumer
