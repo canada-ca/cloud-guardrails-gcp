@@ -18,9 +18,9 @@ As your organization's administrator, you can monitor your users' exposure to da
 - Select App Reports or User Reports
 - Select Accounts
 
-<p align = "center"><img src="./images/mfa.png" width="500">
+<p align = "center"><img src="./images/mfa.png" width="500"></img></p>
 
 Reports can be customized to include *password length compliance, password strength, admin status* amongst many other attributes
-<p align = "center"><img src="./images/reports.png" width="300">
+<p align = "center"><img src="./images/reports.png" width="300"></img></p>
 
 [MFA]: https://cloud.google.com/identity/solutions/enforce-mfa
