@@ -2,7 +2,7 @@
 
 ### Comprehensive Encryption at rest Information: [Encryption at Rest Whitepaper][]
 
-<a href="https://www.youtube.com/watch?v=Svz2KHE1mdM&autoplay=1"><p align = "center"><img src="./images/video-at-rest.png" width="300"></img></p></a>
+<a href="https://www.youtube.com/watch?v=Svz2KHE1mdM&autoplay=1"><p align = "center"><img src="../images/video-at-rest.png" width="300"></img></p></a>
 
 ## **Google's default encryption**
 
