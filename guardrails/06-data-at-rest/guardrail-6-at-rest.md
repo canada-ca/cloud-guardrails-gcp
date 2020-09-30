@@ -12,11 +12,11 @@ Google Cloud Platform **encrypts all customer data at rest without any action re
 ### **Layers of Encryptions**
 Google uses several layers of encryption to protect data. Using multiple layers of encryption adds redundant data protection and allows us to select the optimal approach based on application requirements.
 
-<p align = "center"><img src="./images/encryption-layers.png" width="500"></img></p>
+<p align = "center"><img src="../images/encryption-layers.png" width="500"></img></p>
 
 All data stored in GCP is encrypted with a unique data encryption key (DEK).  More specifically, data is then broken into sub-file chunks for storage. Each chunk can be up to several gigabytes in size. Each chunk of data is then encrypted at the storage level with a unique key.  Two chunks will not have the same encryption key even if they are part of the same Google Cloud storage object owned by the same customer or stored on the same machine.
 
-<p align = "center"><img src="./images/encrypted-data.png" width="500"></img></p>
+<p align = "center"><img src="../images/encrypted-data.png" width="500"></img></p>
 
 Encrypted data chunks are then distributed across Google's storage infrastructure.
 This partition of data, each using a different key, means that the blast radius of a potential encryption key compromise is limited to only that data chunk. The data encryption keys are encrypted with or wrapped by key encryption keys or KEKs.
