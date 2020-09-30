@@ -11,7 +11,7 @@ GCP uses a FIPS 140-2 validated module called BoringCrypto (certificate 2964) in
 Google encrypts and authenticates all data in transit at one or more network layers when data moves outside the physical boundaries controlled by Google.  Google uses various methods of encryption, both default and user configurable, for data in transit.  The type of encryption used depends on the OSI layer, the type of service and the physical component of the infrastructure.  The figures below illustrate the optional and default protections Google Cloud has in place for layers 3, 4 and 7
 
 - **Protection by Default and Options at Layer 3 & 4 across Google Cloud**
-<p align = "center"><img src="../images/encryption-by-default-1.svg" width="700"></img></p>
+<p align = "center"><img src="../images/encryption-by-default-2.svg" width="700"></img></p>
 
 - **Protection by Default and Options at Layer 7 across Google Cloud**
 <p align = "center"><img src="../images/encryption-by-default-2.svg" width="700"></img></p>
