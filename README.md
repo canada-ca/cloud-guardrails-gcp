@@ -60,9 +60,9 @@ gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json \
 
 ```
 # Linux
-$ wget https://github.com/open-policy-agent/conftest/releases/download/v0.17.1/conftest_0.17.1_Linux_x86_64.tar.gz
-$ tar xzf conftest_0.17.1_Linux_x86_64.tar.gz
-$ sudo mv conftest /usr/local/bin
+export CONFTEST_VERSION=0.21.0
+wget https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz
+sudo mv conftest /usr/local/bin
 ```
 Installation process for other [OSes](https://www.conftest.dev/install/)
 
@@ -70,7 +70,7 @@ Installation process for other [OSes](https://www.conftest.dev/install/)
 
 6. Copy files from google storage to your location disk
 ```
-gsutil cp gs://<your_bucket_name>/resource_inventory.json ./cai-dir
+gsutil cp gs://$MY_BUCKET_NAME/resource_inventory.json ./cai-dir
 ```
 
 6. Run the Tests
