@@ -56,26 +56,38 @@ gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json \
 	--project=<your_project_id> \ # --folder or --organization can also be used
 ```
 
-4. Download [Conftest](https://www.conftest.dev/)
+4. Clone this repo `git clone <repourl>`
 
-```
-# Linux
-export CONFTEST_VERSION=0.21.0
-wget https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz
-sudo mv conftest /usr/local/bin
-```
-Installation process for other [OSes](https://www.conftest.dev/install/)
-
-5. Clone this repo
-
-6. Copy files from google storage to your location disk
+5. Copy files from google storage to your location disk
 ```
 gsutil cp gs://$MY_BUCKET_NAME/resource_inventory.json ./cai-dir
 ```
 
-6. Run the Tests
+6. Download [Conftest](https://www.conftest.dev/) or Build the container
+
+### Install
 ```
-./format.sh
+# Linux
+export CONFTEST_VERSION=0.21.0
+wget https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz
+tar -xvf conftest*.tar.gz
+sudo mv conftest /usr/local/bin
+```
+Installation process for other [OSes](https://www.conftest.dev/install/)
+
+### Container
+
+```
+docker build -t gc-guardrails .
+```
+
+7. Run the Tests
+```
+# Local
+./run.sh
+
+# Container
+docker run -v $(pwd):/app
 ```
 
 This will format the output from the inventory dump and run the tests. Results will be placed in the report.txt folder in the current directory.
