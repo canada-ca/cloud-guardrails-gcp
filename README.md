@@ -29,7 +29,6 @@
 
 [CFT Terraform templates](https://github.com/terraform-google-modules/terraform-example-foundation)
 
-[Example Forsetti Policies](https://github.com/forseti-security/policy-library)
 
 ## Permissions
 - Cloud Asset Viewer
