@@ -31,4 +31,4 @@ Accellerator templates to be used with bootstrapping new environments to comply 
 
 Makes use of [Open Policy Agent](https://www.openpolicyagent.org/) and GCP's [Asset Invetory API](https://cloud.google.com/asset-inventory) to validate compliance of deployed resources.
 
-See [documentation](guardrails-check/README.md)
+See [documentation](guardrails-validation/README.md)
