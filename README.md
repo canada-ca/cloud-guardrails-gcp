@@ -13,8 +13,7 @@ The following tables contains the list of [Cloud Guardrails](https://github.com/
 | 03 Cloud Console Access | Limit access to GC managed devices and authorized users. | Doc | [link](./guardrails/03-cloud-console-access/cloud-console-access.md)  |
 | 04 Enterprise Monitoring Accounts | Create role-based account to enable enterprise monitoring and visibility. | Rego | [link](guardrails/04-monitoring-account/04-monitoring-account.rego) |
 | 05 Data Location | Establish policies to restrict GC sensitive workloads to approved geographic locations. | Rego | [link](guardrails/05-data-location/guardrail-6-data-location.md) |
-| 06 Protection of Data-At-Rest | Protect data at rest by default (e.g. storage) for cloud-based workloads.
- | Doc | [link](./guardrails/guardrail-6-at-rest.md) |
+| 06 Protection of Data-At-Rest | Protect data at rest by default (e.g. storage) for cloud-based workloads. | Doc | [link](./guardrails/guardrail-6-at-rest.md) |
 | 07 Protection of Data-In-Transit | Protect data transiting networks through the use of appropriate encryption and network safeguards. | Doc | [link](./guardrails/guardrail-7-in-transit.md) |
 | 08 Segment and Separate | Segment and separate information based on sensitivity of information. | Rego | [link](guardrails/06-segment-and-separate/guardrail-8-segment-seperate.md) |
 | 09 Network Security Services | Establish external and internal network perimeters and monitor network traffic.| Rego | [Link](guardrails/09-network-security-services/guardrail-9-network-security-services.md) |
