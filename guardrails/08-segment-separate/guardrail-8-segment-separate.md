@@ -2,4 +2,4 @@
 
 ### Segment and separate information based on sensitivity of information
 
-This is handled by Security Foundations Blueprints 
+The creation of network infrastructure will be handled through the [accelerator templates](https://github.com/canada-ca/accelerators_accelerateurs-gcp).
