@@ -14,17 +14,28 @@
 # limitations under the License.
 #################
 
-#!/bin/bash
+package main
 
-if test -f "report.txt"; then
-    rm report.txt
-fi
-# Process file and run output through conftest
-# This is necesary due to gcloud asset export outputting each asset as a json object and not as a list
-for file in ./cai-dir/*.json; do
-    echo $file >> report.txt
-    cat $file | tr '\n' ',' | sed  '1s;^;[\n;' - | sed '$ a ]'  | conftest test -p guardrails - >> report.txt
-    printf "\n" >> report.txt
-done
+has_egress(obj, field){
+   obj[field]
+}
 
+denylist = [
+   "0.0.0.0/0"
+]
 
+firewall_match(str, pattern) {
+   contains(str,pattern[_])
+}
+
+deny[{"msg": message}] {
+
+   asset := input.data[_]
+
+   has_egress(asset.resource.data, "destinationRanges")
+
+   firewall_match(asset.resource.data.destinationRanges[0], denylist)
+
+   message := sprintf("Guardrail # 9: Resource '%v' egress allowed range '%v'", [asset.name, asset.resource.data.destinationRanges[0]])
+	
+}

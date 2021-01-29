@@ -32,31 +32,34 @@ gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json \
 gsutil cp gs://$MY_BUCKET_NAME/resource_inventory.json ./cai-dir
 ```
 
-6. Download [Conftest](https://www.conftest.dev/) or Build the container
+6.Setup locally or Build the container
 
-### Install
+### Local Install
+
+To install the dependancies locally you can run the `install.sh` file. This will download `conftest` and put it in `/usr/local/bin`. To confirm that the install was successful run `conftest --version`, you should get output similar to the following:
 ```
-# Linux
-export CONFTEST_VERSION=0.21.0
-wget https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz
-tar -xvf conftest*.tar.gz
-sudo mv conftest /usr/local/bin
+Version: 0.21.0
+Commit: 125160d
+Date: 2020-09-13T10:21:35Z
 ```
-Installation process for other [OSes](https://www.conftest.dev/install/)
 
 ### Container
 
+If you have docker installed you can build a container and run the tests through that.
+
 ```
-docker build -t gc-guardrails .
+docker build -t gc-guardrails:<tagname> .
 ```
 
 7. Run the Tests
 ```
 # Local
-./run.sh
+./run.sh # will run only the tests
+or
+./run-all.sh will run the configuration and download of the assets as well as run.sh
 
 # Container
-docker run -v $(pwd):/app
+docker run -v $(pwd):/app gc-guardrails:<tagname>
 ```
 
 This will format the output from the inventory dump and run the tests. Results will be placed in the report.txt folder in the current directory.

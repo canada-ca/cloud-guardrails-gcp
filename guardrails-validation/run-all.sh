@@ -22,7 +22,7 @@ gcloud services enable cloudasset.googleapis.com
 #Create a storage bucket for storing the asset inventory output. Replace bucket name with your bucket
 #export MY_BUCKET_NAME=<bucket-name>
 
-export MY_BUCKET_NAME=guardrails-bucket-anthos-gcp
+export MY_BUCKET_NAME=my-unique-bucket-name
 export PROJECT=$(gcloud config get-value project)
 gsutil mb gs://$MY_BUCKET_NAME
 
@@ -38,4 +38,13 @@ gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json -
 gsutil cp gs://$MY_BUCKET_NAME/resource_inventory.json ./cai-dir
 
 # Run the Tests
-./run-checks.sh
+if test -f "report.txt"; then
+    rm report.txt
+fi
+# Process file and run output through conftest
+# This is necesary due to gcloud asset export outputting each asset as a json object and not as a list
+for file in ./assets/*.json; do
+    echo $file >> report.txt
+    cat $file | tr '\n' ',' | sed  '1s;^;[\n;' - | sed '$ a ]'  | conftest test -p policies - >> report.txt
+    printf "\n" >> report.txt
+done
