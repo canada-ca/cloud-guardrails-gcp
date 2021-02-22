@@ -1,8 +1,18 @@
 # GC Cloud Guardrails Validation
 
+# Pre-Requisites
+
+- Docker (If on Mac or Windows)
+- Linux Terminal
+- Access to a GCP Environment with the below permissions.
+
 ## Permissions
 - Cloud Asset Viewer
 - Service Usage Consumer
+- Cloud Storage Creator/Viewer
+
+## Known Issues
+- If you are running a mac the Sed command will fail. In order to resolve this you can build a Docker container using the included Dockerfile.
 
 ##  Process
 
@@ -20,16 +30,19 @@ gsutil mb gs://$MY_BUCKET_NAME
 
 3. Run inventory report
 ```
+# content types can be the following: resource, iam-policy, access-policy, org-policy
+# --folder or --organization can also be used
+
 gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json \
-	--content-type=resource \ # content types can be the following: resource, iam-policy, access-policy, org-policy
-	--project=<your_project_id> \ # --folder or --organization can also be used
+	--content-type=resource \ 
+	--project=<your_project_id>
 ```
 
-4. Clone this repo `git clone <repourl>`
+4. Clone this repo `git clone git@github.com:canada-ca/cloud-guardrails-gcp.git`
 
 5. Copy files from google storage to your location disk
 ```
-gsutil cp gs://$MY_BUCKET_NAME/resource_inventory.json ./cai-dir
+gsutil cp gs://$MY_BUCKET_NAME/resource_inventory.json ./assets
 ```
 
 6.Setup locally or Build the container
@@ -43,26 +56,34 @@ Commit: 125160d
 Date: 2020-09-13T10:21:35Z
 ```
 
+7. Run the Tests
+
+If you are on a Mac or want to use a container skip this step
+```
+./run.sh # will run only the tests
+or
+./run-all.sh will run the configuration and download of the assets as well as run.sh
+```
 ### Container
 
 If you have docker installed you can build a container and run the tests through that.
 
+7. Build the container
+
+You will only need to do this step for the installation.
 ```
 docker build -t gc-guardrails:<tagname> .
 ```
 
-7. Run the Tests
+8. Run the Tests
 ```
-# Local
-./run.sh # will run only the tests
-or
-./run-all.sh will run the configuration and download of the assets as well as run.sh
-
-# Container
+# Run the newly built Container
 docker run -v $(pwd):/app gc-guardrails:<tagname>
 ```
 
 This will format the output from the inventory dump and run the tests. Results will be placed in the report.txt folder in the current directory.
+
+
 
 example output
 
