@@ -1,15 +1,13 @@
 # GC Cloud Guardrails Validation
 
-# Pre-Requisites
+## Pre-Requisites
 
 - Docker (If on Mac or Windows)
 - Linux Terminal
 - Access to a GCP Environment with the below permissions.
-
-## Permissions
-- Cloud Asset Viewer
-- Service Usage Consumer
-- Cloud Storage Creator/Viewer
+	- Cloud Asset Viewer
+	- Service Usage Consumer
+	- Cloud Storage Creator/Viewer
 
 ## Known Issues
 - If you are running a mac the Sed command will fail. In order to resolve this you can build a Docker container using the included Dockerfile.
@@ -17,7 +15,7 @@
 ##  Process
 
 ### Generate Inventory
-1. Enable Cloud Asset Inventory API
+1. Enable [Cloud Asset Inventory](https://cloud.google.com/asset-inventory) API
 ```
 gcloud services enable cloudasset.googleapis.com
 ```
@@ -29,10 +27,12 @@ gsutil mb gs://$MY_BUCKET_NAME
 ```
 
 3. Run inventory report
-```
-# content types can be the following: resource, iam-policy, access-policy, org-policy
-# --folder or --organization can also be used
 
+The following command will export a json file of resources withinthe selected project. Additional [content-types](https://cloud.google.com/asset-inventory/docs/reference/rpc/google.cloud.asset.v1#contenttypehttps://cloud.google.com/asset-inventory/docs/reference/rpc/google.cloud.asset.v1#contenttype) that can also export are `iam-policy`, `accesss-policy`, `org-policy`. 
+
+In addition to  supporting the `--project` flag you can also use `--organization`  or `--folder` to [export](https://cloud.google.com/asset-inventory/docs/exporting-to-cloud-storage#exporting_an_asset_snapshot_for_an_organization_or_folder) wider ranges of resources.
+
+```
 gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json \
 	--content-type=resource \ 
 	--project=<your_project_id>
@@ -45,11 +45,11 @@ gcloud asset export --output-path=gs://$MY_BUCKET_NAME/resource_inventory.json \
 gsutil cp gs://$MY_BUCKET_NAME/resource_inventory.json ./assets
 ```
 
-6.Setup locally or Build the container
+6. Setup locally or Build the container
 
-### Local Install
+To install the dependancies locally you can run the `install.sh` file. This will download `conftest` and put it in `/usr/local/bin`.
 
-To install the dependancies locally you can run the `install.sh` file. This will download `conftest` and put it in `/usr/local/bin`. To confirm that the install was successful run `conftest --version`, you should get output similar to the following:
+To confirm that the install was successful run `conftest --version`, you should get output similar to the following:
 ```
 Version: 0.21.0
 Commit: 125160d
@@ -59,11 +59,18 @@ Date: 2020-09-13T10:21:35Z
 7. Run the Tests
 
 If you are on a Mac or want to use a container skip this step
+
+To run only the tests
 ```
-./run.sh # will run only the tests
-or
-./run-all.sh will run the configuration and download of the assets as well as run.sh
+./run.sh
 ```
+
+The following will run the configuration and download of the assets as well as run.sh
+
+```
+./run-all.sh 
+```
+
 ### Container
 
 If you have docker installed you can build a container and run the tests through that.
@@ -75,17 +82,15 @@ You will only need to do this step for the installation.
 docker build -t gc-guardrails:<tagname> .
 ```
 
-8. Run the Tests
+8. Run the Tests with the new container.
+
 ```
-# Run the newly built Container
 docker run -v $(pwd):/app gc-guardrails:<tagname>
 ```
 
 This will format the output from the inventory dump and run the tests. Results will be placed in the report.txt folder in the current directory.
 
-
-
-example output
+example output:
 
 ```
 ./cai-dir/access_policy_inventory.json
