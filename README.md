@@ -19,7 +19,7 @@ The following tables contains the list of [Cloud Guardrails](https://github.com/
 | 09 Network Security Services | Establish external and internal network perimeters and monitor network traffic.| Rego | [Link](./guardrails/09_Limit_egress_traffic/guardrails-9-network-security-services.md) |
 | 10 Cyber Defence Services | Establish MOU for defensive services and threat monitoring protection services. | MOU |
 | 11 Logging and Monitoring | Enable logging for the cloud environment and for cloud-based workloads. | Rego | [Link](./guardrails/11-logging-and-monitoring/guardrail-11-logging-monitoring.md) |
-| 12 Configuration of Cloud Marketplaces | Configuration of Cloud Market Places | Rego | [Link](./guardrails/12-market-place/guardrail-12-marketplace) |
+| 12 Configuration of Cloud Marketplaces | Configuration of Cloud Market Places | Rego | [Link](./guardrails/12-market-place/guardrail-12-marketplace.md) |
 
 
 ## GC Guardrails Accelerator Templates
