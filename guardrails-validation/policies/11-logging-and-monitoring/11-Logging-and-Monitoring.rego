@@ -15,12 +15,13 @@
 #################
 
 package main
+import future.keywords.in
 
 # This will check that log sink exists to save the logs auditing and monitoring
 # the example below uses name "log_sink", change this name to match the existing name
 
-sink_name := "log_sink"
-required_log_bucket_name="log-history"
+sink_name := "org_log_sink"
+required_log_bucket_name="logginglogsink-goc"
 bucket_required_asset_type="storage.googleapis.com/Bucket"
 logsink_required_asset_type="logging.googleapis.com/LogSink"
 required_asset_type = "storage.googleapis.com/Bucket"
@@ -50,13 +51,17 @@ deny[{"msg":message}] {
 
 # Deny if Log Sync does not exist that matches $sink_name (set this value at the top of the file)
 deny [{"msg":message}] {
-    asset := input.data[_]
     
-    asset.asset_type == loggingAsset
-    
-    not sink_name == asset.resource.data.name
-    
-    message := sprintf("Guardrail # 11: The log sink '%s' does not exist", [sink_name])
+    not sink_name in resource_names
+
+    # not test
+    message := sprintf("Guardrail # 11: The log sink '%s' does not exist.", [sink_name])
+
+}
+
+resource_names[name] {
+    some item in input.data
+    name := item.resource.data.name
 }
 
 bucketCheck(assetdata) {
