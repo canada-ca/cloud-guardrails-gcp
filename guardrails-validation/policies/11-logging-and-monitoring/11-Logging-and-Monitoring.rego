@@ -1,5 +1,5 @@
 ################
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,60 +15,57 @@
 #################
 
 package main
+
 import future.keywords.in
 
 # This will check that log sink exists to save the logs auditing and monitoring
 # the example below uses name "log_sink", change this name to match the existing name
 
-sink_name := "org_log_sink"
-required_log_bucket_name="logginglogsink-goc"
-bucket_required_asset_type="storage.googleapis.com/Bucket"
-logsink_required_asset_type="logging.googleapis.com/LogSink"
-required_asset_type = "storage.googleapis.com/Bucket"
-loggingAsset = "logging.googleapis.com/LogSink"
+required_log_bucket_name_suffix = "-org-sink"
 
-# Check for matching Bucket with the name "log-history"
-deny [{"msg": message}] {
+required_storage_bucket_name_suffix = "bucket"
 
-    asset := input.data
-    
-    asset[_].asset_type == required_asset_type
-    not bucketCheck(asset)
-    # not asset.resource.data.name == required_log_bucket_name
-    
-    message := sprintf("Guardrail # 11: No storage bucket matching '%v' found.", [required_log_bucket_name])
+bucket_required_asset_type = "storage.googleapis.com/Bucket"
 
+logsink_required_asset_type = "logging.googleapis.com/LogSink"
+
+logsink_destination_storagebucket_prefix = "storage.googleapis.com"
+
+logsink_destination_logbucket_prefix = "logging.googleapis.com"
+
+
+# Deny if not any organization log sink exists
+deny[{"msg": message}] {
+	count(organization_sinks) == 0
+
+	# not test
+	message := "Guardrail # 11: No any organizational log sink exists."
 }
 
-# Deny if "logging.googleapis.com/LogSink" asset does not exist
-deny[{"msg":message}] {
+# Deny if organization log sink does not any destination defined
+deny[{"msg": message}] {
+    some sink in organization_sinks
+    not sink.resource.data.destination
 
-        asset := input.data
-        not exists(asset) 
-
-        message := sprintf("Guardrail # 11: Asset Type '%s' does not exist and is required to meet logging criteria", ["logging.googleapis.com/LogSink"])
+	# not test
+	message := "Guardrail # 11: No any destination for organization log sink exists."
 }
 
-# Deny if Log Sync does not exist that matches $sink_name (set this value at the top of the file)
-deny [{"msg":message}] {
-    
-    not sink_name in resource_names
+# Deny if log bucket destination does not exist
+deny[{"msg": message}] {
+    some sink in organization_sinks
+    not startswith(sink.resource.data.destination, logsink_destination_logbucket_prefix)
 
-    # not test
-    message := sprintf("Guardrail # 11: The log sink '%s' does not exist.", [sink_name])
-
+	# not test
+	message := "Guardrail # 11: No any log bucket destination for organization log sink exists."
 }
 
-resource_names[name] {
-    some item in input.data
-    name := item.resource.data.name
+organization_sinks[sink] {
+	some item in input.data
+	item.asset_type == logsink_required_asset_type
+    item.resource.data.includeChildren == true
+    endswith(item.resource.data.name, required_log_bucket_name_suffix)
+	some ancestor in item.ancestors
+	startswith(ancestor, "organizations/")
+	sink := item
 }
-
-bucketCheck(assetdata) {
-    assetdata[_].resource.data.name == required_log_bucket_name
-}
-
-exists(asset_type){
-        asset_type[_].asset_type == "logging.googleapis.com/LogSink"
-}
-

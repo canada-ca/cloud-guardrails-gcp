@@ -16,7 +16,7 @@
 
 #!/bin/bash
 
-export CONFTEST_VERSION=0.32.1
+export CONFTEST_VERSION=0.39.2
 
 wget https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz && \
 mkdir conftest && \
